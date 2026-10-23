@@ -50,6 +50,14 @@ Updates for this Store version are managed through Microsoft Store. The applicat
 
 ### Copyright and attribution
 
+The Store's copyright/trademark field has a [200-character limit](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/add-additional-information). Paste this 175-character value:
+
+```text
+Composa © 2026 Dennis van der Stelt (MIT). Compositor © 2026 Wonder Assembly LLC (MIT). Kazuha branding/packaging © 2026 Kazuha contributors (MIT). Third-party licenses apply.
+```
+
+Full attribution for documentation and notices:
+
 Composa: Copyright (c) 2026 Dennis van der Stelt, MIT License. Portions of the image-processing math follow Compositor: Copyright (c) 2026 Wonder Assembly LLC, MIT License. Original reference: [Compositor by Robbie Tilton](https://github.com/robbietilton/Compositor). Windows implementation: [Composa](https://github.com/dvdstelt/Composa). Community packaging additions: Copyright (c) 2026 Kazuha packaging contributors, MIT License. Third-party libraries and models retain their own licenses and included notices.
 
 ### Release notes
@@ -93,11 +101,17 @@ Reviewed Composa upstream commit: `86529d3b5355d28ddc28ec3db2e4de1d4d00f63b`. Th
 
 A search of `src` for HTTP/network clients and URLs located the update client and model provenance URLs. The managed channel prevents both current Kazuha builds from initiating the upstream update flow; only the legacy Composa-branded release retains that flow. The model URLs are catalog metadata; the model loader reads local files. No application analytics/upload endpoint was identified by that source search. This is not a claim about every native dependency or operating-system diagnostic mechanism.
 
+## Saved submission status
+
+Partner Center reports the package as **Validated** and the Store listing as **Complete** after the copyright field was reduced to the 175-character value above. The **Submit for certification** button is enabled. The corrected screenshot was accepted as a genuine **1560 × 992 PNG**, and the simplified **300 × 300** tile was accepted. The user approved the age-rating agreement; the saved ratings are **IARC 3+ / ESRB E**. The saved price is **Free ($0)**.
+
+**Certification has not been submitted.** The hold for manual publication remains selected. These portal results do not establish installed-Kazuha workflow testing, Windows App Certification Kit results, or Microsoft certification.
+
 ## Inputs still requiring confirmation
 
 - Installed-Kazuha workflow testing, Windows App Certification Kit results, and Microsoft's certification and restricted-capability approval. Source tests and upload validation do not supply those results.
-- Final listing text, category selection, screenshot/logo acceptance, and any additional device-family requirements in the portal.
-- Age-rating questionnaire answers, markets, release timing, and any identity, tax, or compliance declarations requested by the account. These must not be inferred from the editor's feature list.
+- Any additional device-family requirements in the portal.
+- Markets, final publication timing, and any outstanding identity, tax, or compliance declarations requested by the account. These must not be inferred from the editor's feature list.
 - Confirmation that the repository's issue tracker is the support/privacy contact the maintainer will monitor.
 
 The package identity, x64 architecture, minimum Windows version, Kazuha UI/logo, runtime paths, and production managed-update metadata are now verified. Submission options include the `runFullTrust` explanation and a hold for manual publication. These draft settings do not establish certification or Store availability.
