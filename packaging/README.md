@@ -20,19 +20,23 @@ signed with a free, locally generated **development certificate**.
 1. Keep the MSIX, `Composa-Local-Build.cer`, `Install-Msix.ps1`, `sha256sums.txt`,
    and accompanying documentation together in one folder. If you received a ZIP,
    extract it first.
-2. Open **Windows PowerShell** from Start using **Run as administrator**. Use
+2. If Windows marks the downloaded `Install-Msix.ps1` as blocked, first verify
+   the download against the published checksums, then right-click the script,
+   choose **Properties > Unblock > Apply**. If scripts are restricted by your
+   organization's policy, use the dialog workflow below when permitted.
+3. Open **Windows PowerShell** from Start using **Run as administrator**. Use
    Windows PowerShell (`powershell.exe`), not PowerShell 7 (`pwsh.exe`).
-3. Change into the extracted folder and run:
+4. Change into the extracted folder and run:
 
    ```powershell
    .\Install-Msix.ps1
    ```
 
-4. The script verifies every listed checksum, the package identity/publisher,
+5. The script verifies every listed checksum, the package identity/publisher,
    and its embedded signer, then shows the public certificate's fingerprint.
    Read the trust prompt and type `TRUST` to trust this certificate and install.
    Any other response cancels before certificate or installation changes.
-5. Open **Composa (local MSIX)** from Start.
+6. Open **Composa (local MSIX)** from Start.
 
 The certificate is imported only into **Local Computer > Trusted People**, never
 Trusted Root. It allows packages signed with this certificate to be installed on
@@ -134,6 +138,7 @@ Building does not install the package or change certificate stores/system settin
 - [Sign an MSIX package](https://learn.microsoft.com/en-us/windows/msix/package/sign-msix-package-guide)
 - [Create packages with MakeAppx](https://learn.microsoft.com/en-us/windows/msix/package/create-app-package-with-makeappx-tool)
 
-Microsoft describes self-signed packages as suitable for development/testing.
-For broad public distribution, use a publicly trusted signing method or the
-Microsoft Store. This is a local build for personal use/testing.
+This community download retains the locally tested package and its self-signed
+development certificate. Installing it requires the explicit trust step above.
+A Microsoft Store release needs its own Store-assigned package identity and
+Microsoft certification; this download is the independent sideload build.

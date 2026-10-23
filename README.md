@@ -4,6 +4,16 @@
 
 The Windows application packaged here is **[Composa by Dennis van der Stelt](https://github.com/dvdstelt/Composa)**, an existing open-source implementation inspired by Compositor. This repository adds local MSIX packaging, installation helpers, and verification scripts around the unmodified **Composa 1.4.0** Windows x64 release. It is an independent packaging project, not an official release from either upstream project.
 
+## Download the Windows MSIX
+
+**[Download Composa 1.4.0 for Windows x64 (MSIX ZIP)](https://github.com/FupaulHuang/compositor-windows-msix/releases/download/v1.4.0-msix.1/Composa-1.4.0-Windows-x64-MSIX.zip)**
+
+For Windows 10 version 2004 (build 19041) or later, or Windows 11. The ZIP includes the MSIX, public signing certificate, installation instructions, checksums, and license notices. No developer or signing account is needed.
+
+This community build uses a self-signed certificate that requires manual trust with administrator access. Verify the release checksums, extract the ZIP, inspect and install the public certificate into **Local Machine > Trusted People**, then double-click the MSIX. The certificate identifies this community build; it does not verify the upstream authors' identity. This release is not Microsoft Store certified or signed by a publicly trusted publisher.
+
+Read the [release and full installation instructions](https://github.com/FupaulHuang/compositor-windows-msix/releases/tag/v1.4.0-msix.1) before installing.
+
 ## Get the application
 
 Clone this repository with its pinned upstream source submodule:
