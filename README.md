@@ -2,93 +2,50 @@
 
 <img src="packaging/assets/kazuha-icon.png" alt="Kazuha maple-leaf logo" width="120">
 
-**Original reference: [Compositor by Robbie Tilton](https://github.com/robbietilton/Compositor).** Compositor is the macOS image editor that inspired this project.
+**Original reference: [Compositor by Robbie Tilton](https://github.com/robbietilton/Compositor).** Kazuha is an independent Windows image editor based on **[Composa by Dennis van der Stelt](https://github.com/dvdstelt/Composa)**.
 
-**Kazuha** is an independent Windows image-editor project based on **[Composa by Dennis van der Stelt](https://github.com/dvdstelt/Composa)**, an existing open-source implementation inspired by Compositor. This repository adds Windows packaging, installation helpers, and verification scripts. Kazuha-branded builds are being prepared with a minimal maple-leaf logo: a natural green-to-yellow-to-orange-to-red autumn gradient, three essential vein strokes, and one wind curve. The project is not an official release from either upstream project.
+Kazuha adds its own name and minimal autumn maple-leaf logo, Windows packaging, installation helpers, and verification. The editor is built from Composa 1.4.0 with a recorded branding change and the upstream managed update setting. It is independently maintained and does not claim endorsement or authorship of either upstream project.
 
-The currently published release below is the **legacy Composa 1.4.0 package**. Its signed application and assets retain their original Composa names. The Kazuha Microsoft Store build is in preparation; no Store availability or certification is claimed.
+## Download and install
 
-## Download the legacy Windows MSIX
+**[Download Kazuha 1.4.0 for Windows x64 (MSIX ZIP)](https://github.com/FupaulHuang/kazuha/releases/download/v1.4.0-kazuha.1/Kazuha-1.4.0-Windows-x64-MSIX.zip)**
 
-**[Download the legacy Composa 1.4.0 package (Windows x64 MSIX ZIP)](https://github.com/FupaulHuang/kazuha/releases/download/v1.4.0-msix.1/Composa-1.4.0-Windows-x64-MSIX.zip)**
+Requires Windows 10 version 2004 (build 19041) or later, or Windows 11. The complete ZIP includes the application, public signing certificate, installer, checksums, and license notices. No developer/signing account or separate .NET installation is needed.
 
-For Windows 10 version 2004 (build 19041) or later, or Windows 11. The ZIP includes the MSIX, public signing certificate, installation instructions, checksums, and license notices. No developer or signing account is needed.
+1. Verify the download against the [release checksums](https://github.com/FupaulHuang/kazuha/releases/tag/v1.4.0-kazuha.1), then extract the ZIP.
+2. Inspect `Kazuha-Local-Build.cer`. Install it into **Local Machine > Trusted People** and approve the administrator prompt.
+3. In your ordinary desktop session, double-click `Kazuha-1.4.0-x64.msix`, choose **Install**, then open **Kazuha** from Start.
 
-This community build uses a self-signed certificate that requires manual trust with administrator access. Verify the release checksums, extract the ZIP, inspect and install the public certificate into **Local Machine > Trusted People**, then double-click the MSIX. The certificate identifies this community build; it does not verify the upstream authors' identity. This release is not Microsoft Store certified or signed by a publicly trusted publisher.
+This GitHub download is signed with a self-signed development certificate that requires manual trust. It identifies this community build, not the upstream authors' identity. See the [installation guide](packaging/README-Kazuha.md) for certificate details and the optional verified PowerShell installer.
 
-Read the [release and full installation instructions](https://github.com/FupaulHuang/kazuha/releases/tag/v1.4.0-msix.1) before installing.
+The separate Microsoft Store package has been built, uploaded, and saved after portal package validation. Store availability and certification are pending. The GitHub package uses `Local.Kazuha.Windows`; the Store package uses `Fuh.Kazuha`.
 
-## Get the upstream portable application
+## Features
 
-Clone this repository with its pinned upstream source submodule:
+- Layers, groups, masks, blend modes, effects, and adjustment layers.
+- Painting, selections, transformations, cropping, editable text, and shapes.
+- Filters, color adjustments, and bundled local subject-detection and enhancement models.
+- Editable `.cmps` projects and PNG, JPEG, and WebP export.
+- Optional local MCP automation, disabled by default.
+
+Kazuha retains Composa's `.cmps` format; it does not open Compositor's macOS `.comp` projects. Core editing and bundled model inference run locally. The managed update setting disables the application's upstream GitHub update checks and downloads. Install GitHub sideload updates manually; a future Store installation receives its updates through Microsoft Store. See the [privacy policy](docs/store/PRIVACY.md).
+
+## Build from source
 
 ```powershell
 git clone --recurse-submodules https://github.com/FupaulHuang/kazuha.git
 ```
 
-From the cloned repository's root, download and extract the portable release:
+The upstream `source/Composa` submodule is pinned to [`86529d3b5355d28ddc28ec3db2e4de1d4d00f63b`](https://github.com/dvdstelt/Composa/commit/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b). Run `git submodule update --init --recursive` if it was omitted during cloning.
 
-```powershell
-.\packaging\Get-Portable.ps1
-.\Launch-Composa.cmd
-```
-
-The downloader verifies the pinned SHA-256 before extraction. Keep the entire portable application folder together. The portable release includes its runtime and does not require a developer account, signing account, or administrator access to launch.
-
-Downloaded application binaries, generated MSIX packages, local certificates, build output, and machine-specific verification records are not tracked in Git.
-
-## Build and install the legacy MSIX
-
-Packaging requires Windows x64, **PowerShell 7.2 or later**, and the Windows SDK's `MakeAppx.exe` and `SignTool.exe`. The build wraps the published application; it does not require the .NET SDK.
-
-After running `Get-Portable.ps1`, run from PowerShell 7:
-
-```powershell
-.\packaging\Build-Msix.ps1 -PortableDirectory .\dist\portable\composa-1.4.0-win-x64
-```
-
-The generated bundle is in `dist\msix`. The builder validates the application payload, creates a local development certificate, signs the MSIX, and removes the temporary private-key file. Building does not install the app or change certificate trust.
-
-Installation requires **Windows 10 version 2004 (build 19041) or later, or Windows 11**, and administrator access for the certificate trust step. No developer or signing account is required. Open **Windows PowerShell** (`powershell.exe`) as administrator, change to the repository root, and run:
-
-```powershell
-.\dist\msix\Install-Msix.ps1
-```
-
-The installer verifies the bundle, displays the local certificate fingerprint, and asks for `TRUST` before adding that certificate to **Local Computer > Trusted People**. It then installs **Composa (local MSIX)**, available from Start. The certificate identifies this local build; it does not verify the upstream authors' identity. A fresh build generates a new certificate that may need to be trusted again.
-
-See the [packaging guide](packaging/README.md) for build options, installation details, updates, and removal. The upstream app's update checker downloads upstream releases; it does not update this local MSIX.
-
-## Application features
-
-- Layers, groups, masks, blend modes, layer effects, and adjustment layers.
-- Painting, selections, transformations, cropping, editable text, and shapes.
-- Filters, color adjustments, and bundled offline subject detection.
-- Layered `.cmps` projects and common image import/export.
-
-Composa's `.cmps` files are not compatible with Compositor's macOS `.comp` projects. See the [upstream README](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/README.md) for supported features and differences.
-
-## Source and attribution
-
-| Role | Project |
-| --- | --- |
-| Original reference and inspiration | [Robbie Tilton's Compositor](https://github.com/robbietilton/Compositor) |
-| Windows application implementation | [Dennis van der Stelt's Composa](https://github.com/dvdstelt/Composa) |
-| Upstream release used by the legacy package and Kazuha build | [Composa v1.4.0](https://github.com/dvdstelt/Composa/releases/tag/v1.4.0) |
-| Additions in this repository | Kazuha branding, Windows packaging, installation helpers, and verification scripts |
-
-The `source/Composa` Git submodule is pinned to commit [`86529d3b5355d28ddc28ec3db2e4de1d4d00f63b`](https://github.com/dvdstelt/Composa/commit/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b). If the repository was cloned without submodules, run `git submodule update --init --recursive`.
-
-The input archive is `composa-1.4.0-win-x64.zip`, with the pinned upstream SHA-256:
-
-```text
-1d3d8d5f1af258d2d82541b62a3b5a14cacb638f74bb4ccf2049e874833eb162
-```
-
-Composa retains its upstream MIT license, original Compositor attribution to Wonder Assembly LLC, and dependency/model notices. The packaging preserves those notices in the distributed application. See the [upstream license](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/LICENSE) and the notices included with the downloaded release.
-
-To build or develop the application itself, install the **.NET 10 SDK** and follow the [upstream build instructions](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/README.md#build-from-source). That source-build workflow is separate from wrapping the verified published release into an MSIX.
+Use Windows x64, PowerShell 7.2 or later, .NET SDK **10.0.402**, and the Windows SDK packaging tools. The [build guide](packaging/README.md) prepares an isolated branded source copy, runs selected tests, publishes the application, and creates either a signed sideload package or an unsigned Store upload package. The upstream checkout remains unchanged. Downloaded dependencies, binaries, private signing material, and local test records are excluded from Git.
 
 ## Verification
 
-The legacy Composa portable application, package integrity, installed MSIX, and selected native UI workflows were checked on Windows 11. Read the [sanitized verification summary](docs/VERIFICATION.md) for the tested workflows and scope. Kazuha-branded builds require separate verification. Verification scripts are in `tests/`; generated local evidence is excluded from Git. The full upstream test suite was not run as part of the legacy packaging work.
+**216 selected tests passed**, and both Kazuha packages passed their build and payload-integrity checks. The signed sideload package also passed signature and content-block verification. Native payload checks confirmed the title, icon, sample rendering, and managed-update message. Installed Kazuha workflow testing, Windows App Certification Kit testing, and Store certification are not claimed. Read the [verification summary](docs/VERIFICATION.md) for the exact scope and the separate historical Composa installation results.
+
+## Attribution and earlier release
+
+The [upstream Composa license](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/LICENSE), Compositor attribution to Wonder Assembly LLC, and third-party/model notices are preserved. See [NOTICE.md](NOTICE.md) for credits; the root MIT license covers this repository's additions.
+
+The [earlier Composa-branded release](https://github.com/FupaulHuang/kazuha/releases/tag/v1.4.0-msix.1) remains available as a historical package. Its filenames, certificate, installed label, and original upstream updater remain unchanged. New users should use the Kazuha release above.

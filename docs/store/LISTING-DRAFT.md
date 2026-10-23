@@ -1,6 +1,6 @@
 # Kazuha — Microsoft Store listing draft
 
-Prepared 23 October 2026. This is draft content for a free English listing; it does not represent a submitted or certified Store product. **Kazuha** is the reserved Store name for product **9N327XKWB7L5**. The planned Store build compiles the pinned Composa source with Kazuha UI branding, a minimal maple-leaf logo with a natural green-to-yellow-to-orange-to-red autumn gradient and one wind curve, and the upstream source's existing `UpdateChannel=managed` setting. Build and package testing are pending. Confirm final package behavior before copying the fields into Partner Center.
+Prepared 23 October 2026. This is draft content for a free English listing. **Kazuha** is the reserved Store name for product **9N327XKWB7L5**. The Store package was built from pinned Composa source with Kazuha UI branding, a minimal maple-leaf logo with an autumn gradient and one wind curve, and the existing `UpdateChannel=managed` setting. The source build passed 216 selected tests; the unsigned package passed payload checks and Partner Center upload validation and was saved in the draft. Native payload checks confirmed the title, icon, sample rendering, and managed-update message. Installed-package testing, Windows App Certification Kit results, Store certification, and publication remain unestablished.
 
 ## Proposed listing fields
 
@@ -11,6 +11,8 @@ Prepared 23 October 2026. This is draft content for a free English listing; it d
 | Package identity name | Fuh.Kazuha |
 | Package publisher | CN=06B7220A-0F66-4D34-82F8-853BDEDBC011 |
 | Publisher display name | Fuh |
+| Package version and architecture | 1.4.0.0, x64 |
+| Minimum Windows version | Windows 10 build 19041 |
 | Language | English (United States) |
 | Price | Free |
 | Category | Photo & video; use Multimedia design if that better matches the available category choices |
@@ -33,7 +35,7 @@ For optional automation, Help > Allow AI Control enables a local Model Context P
 
 The original reference is Compositor by Robbie Tilton. Kazuha is based on Composa by Dennis van der Stelt, with independent branding and packaging. It is not an official release from either upstream project. Its .cmps files are not compatible with Compositor's macOS .comp projects.
 
-Updates for this Store version are managed through Microsoft Store. The application does not automatically check GitHub for upstream updates or offer GitHub release downloads; its update menu directs you to the package manager. See the privacy policy for local storage, optional AI-client access, and the separate GitHub sideload release's update behavior.
+Updates for this Store version are managed through Microsoft Store. The application does not automatically check GitHub for upstream updates or offer GitHub release downloads; its update menu directs you to the package manager. See the privacy policy for local storage and optional AI-client access.
 
 ### Features
 
@@ -56,7 +58,7 @@ Initial Kazuha Store package for Windows x64, based on Composa 1.4.0 with Kazuha
 
 ## Restricted capability explanation: runFullTrust
 
-Kazuha runs a Windows desktop executable based on Composa, built with .NET and Avalonia. It needs full-trust desktop execution to run that executable and its native graphics, image-decoding, and ONNX inference libraries, open and save user-selected image/project files with normal desktop file dialogs, and optionally communicate with a user-enabled MCP client over a same-user named pipe. The editor operates with the signed-in user's ordinary permissions; editing does not require administrator elevation. It does not install a background service, driver, or scheduled task. The local certificate trust helper belongs to the separate legacy GitHub sideload bundle and must not be part of the Store user's installation flow.
+Kazuha runs a Windows desktop executable based on Composa, built with .NET and Avalonia. It needs full-trust desktop execution to run that executable and its native graphics, image-decoding, and ONNX inference libraries, open and save user-selected image/project files with normal desktop file dialogs, and optionally communicate with a user-enabled MCP client over a same-user named pipe. The editor operates with the signed-in user's ordinary permissions; editing does not require administrator elevation. It does not install a background service, driver, or scheduled task. The local certificate trust helper belongs to the separate GitHub sideload bundle and is absent from the Store package.
 
 ## Certification test notes
 
@@ -72,29 +74,30 @@ No application account, subscription, or test credentials are required. Test wit
 8. With network access, launch the Store-bound build and inspect Help > Check for Updates. Confirm it displays the managed-update message directing the user to the package manager. Confirm no GitHub release download is offered and no automatic GitHub update request is made by this build.
 9. Close and relaunch normally. Confirm the application exits and saved projects reopen. Uninstall through Windows Settings and confirm the app registration is removed; user-saved files are not test cleanup targets.
 
-The existing [verification summary](../VERIFICATION.md) covers the legacy Composa sideload package on Windows 11. The Kazuha Store-bound package, branding, identity, and managed updater configuration must be checked separately. No Microsoft Store certification result is claimed.
+The [verification summary](../VERIFICATION.md) records Kazuha source tests, package and identity checks, and native payload smoke checks separately from the historical installed-Composa results. The steps above are certification instructions, not a claim that installed-Kazuha workflows have passed. The current native editor screenshot is [kazuha-editor.png](assets/kazuha-editor.png). No Windows App Certification Kit or Microsoft Store certification result is claimed.
 
 ## Source evidence for privacy and behavior
 
-Reviewed Composa upstream commit: `86529d3b5355d28ddc28ec3db2e4de1d4d00f63b`. The references below document upstream behavior; confirm runtime names and data locations after Kazuha branding is integrated.
+Reviewed Composa upstream commit: `86529d3b5355d28ddc28ec3db2e4de1d4d00f63b`. The references below document upstream behavior. The [branding preparation script](../../packaging/Prepare-KazuhaSource.ps1) records Kazuha's name/icon changes; the [managed build script](../../packaging/Build-ManagedApp.ps1) selects the existing managed update channel. The resulting production metadata and Kazuha data-path tests were checked.
 
 | Behavior | Source at the reviewed commit |
 | --- | --- |
 | Preferences, recent file paths, AI control off; update preference defaults on but is gated by the build's update channel | [Settings.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/Settings.cs) |
 | Windows settings/cache/download folders | [AppPaths.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/AppPaths.cs) |
 | Recovery copies and associated metadata | [Recovery.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/Recovery.cs) |
-| Build metadata and managed-channel gate; GitHub endpoint, headers, and 24-hour interval used by the separate sideload build | [Composa.App.csproj](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/Composa.App.csproj), [UpdateCheck.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/UpdateCheck.cs) |
+| Build metadata and managed-channel gate; GitHub endpoint, headers, and 24-hour interval retained only by the legacy Composa sideload build | [Composa.App.csproj](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/Composa.App.csproj), [UpdateCheck.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/UpdateCheck.cs) |
 | Managed build's manual-check message and exclusion of downloadable assets | [MainWindow.Updates.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/MainWindow.Updates.cs), [ReleaseAssets.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/ReleaseAssets.cs) |
-| User-triggered release/checksum downloads in the separate sideload build | [UpdateDownload.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/UpdateDownload.cs) |
+| User-triggered release/checksum downloads retained only by the legacy Composa sideload build | [UpdateDownload.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/UpdateDownload.cs) |
 | Same-user pipe and optional MCP access | [McpHost.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/Mcp/McpHost.cs), [MCP file tools](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.App/Mcp/ComposaTools.Files.cs) |
 | Local model files, no runtime model download, CPU inference | [OnnxModel.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.Core/Vision/OnnxModel.cs), [ModelRunner.cs](https://github.com/dvdstelt/Composa/blob/86529d3b5355d28ddc28ec3db2e4de1d4d00f63b/src/Composa.Core/Vision/ModelRunner.cs) |
 
-A search of `src` for HTTP/network clients and URLs located the update client and model provenance URLs. The managed channel prevents the Store build from initiating the upstream update flow; the separate published sideload release retains that flow. The model URLs are catalog metadata; the model loader reads local files. No application analytics/upload endpoint was identified by that source search. This is not a claim about every native dependency or operating-system diagnostic mechanism.
+A search of `src` for HTTP/network clients and URLs located the update client and model provenance URLs. The managed channel prevents both current Kazuha builds from initiating the upstream update flow; only the legacy Composa-branded release retains that flow. The model URLs are catalog metadata; the model loader reads local files. No application analytics/upload endpoint was identified by that source search. This is not a claim about every native dependency or operating-system diagnostic mechanism.
 
 ## Inputs still requiring confirmation
 
-- Final Store-bound payload, minimum Windows version, architecture, Kazuha UI/logo integration, runtime data paths, and verification that the built executable contains `UpdateChannel=managed` metadata and behaves as described. The legacy GitHub sideload release retains the original Composa portable binaries and their updater.
-- The portal's current category choices, required screenshot/logo assets, and any additional device-family requirements.
+- Installed-Kazuha workflow testing, Windows App Certification Kit results, and Microsoft's certification and restricted-capability approval. Source tests and upload validation do not supply those results.
+- Final listing text, category selection, screenshot/logo acceptance, and any additional device-family requirements in the portal.
 - Age-rating questionnaire answers, markets, release timing, and any identity, tax, or compliance declarations requested by the account. These must not be inferred from the editor's feature list.
 - A publicly reachable approved privacy-policy URL and confirmation that the repository's issue tracker is the support/privacy contact the maintainer will monitor.
-- Validation and certification results for the actual Store-bound package. Existing sideload verification does not supply those results.
+
+The package identity, x64 architecture, minimum Windows version, Kazuha UI/logo, runtime paths, and production managed-update metadata are now verified. Submission options include the `runFullTrust` explanation and a hold for manual publication. These draft settings do not establish certification or Store availability.

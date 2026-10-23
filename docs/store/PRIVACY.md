@@ -2,7 +2,7 @@
 
 Last updated: 23 October 2026.
 
-This policy describes the proposed **Kazuha** Microsoft Store build based on Composa upstream source commit `86529d3b5355d28ddc28ec3db2e4de1d4d00f63b` (Composa 1.4.0), and explains the different update behavior of the legacy Composa GitHub sideload release. The Store build adds Kazuha branding and uses the upstream source's existing `UpdateChannel=managed` setting. Branding integration, build, and package tests are pending; this document does not announce Store availability or certification.
+This policy describes **Kazuha 1.4.0**, built from Composa upstream source commit `86529d3b5355d28ddc28ec3db2e4de1d4d00f63b` with recorded Kazuha branding. Both the current Kazuha GitHub sideload package and the Store upload package use the existing `UpdateChannel=managed` setting. The legacy Composa-branded release has different update behavior, explained below. The Store package has passed draft upload validation; Store availability and certification remain pending.
 
 Kazuha is maintained through the [Kazuha repository](https://github.com/FupaulHuang/kazuha). The original reference is [Compositor by Robbie Tilton](https://github.com/robbietilton/Compositor); the upstream application is [Composa by Dennis van der Stelt](https://github.com/dvdstelt/Composa).
 
@@ -14,15 +14,15 @@ The application reads images and projects you open and writes projects or export
 
 ## Local settings and recovery copies
 
-The application stores preferences, including window and panel layout, shortcuts, recent file paths, export choices, AI-control permission, and update-check state. The recent-files list can contain up to 12 paths. The intended Windows settings path for the Kazuha build is `%APPDATA%\Kazuha\settings.json`; the legacy Composa application uses `%APPDATA%\Composa\settings.json`. Windows may redirect app data into a package-specific location for an MSIX installation. These Kazuha paths remain subject to final package verification.
+The application stores preferences, including window and panel layout, shortcuts, recent file paths, export choices, AI-control permission, and update-check state. The recent-files list can contain up to 12 paths. Kazuha uses `%APPDATA%\Kazuha\settings.json` on Windows; the legacy Composa application uses `%APPDATA%\Composa\settings.json`. Windows may redirect app data into a package-specific location for an MSIX installation.
 
-While a document has unsaved changes, the application periodically writes local recovery copies, normally every two minutes. These can contain the document's image content, layers and text, together with its title, original path, saved time, and process identifier. The intended Kazuha recovery location is `%LOCALAPPDATA%\Kazuha\recovery`; the legacy Composa location is `%LOCALAPPDATA%\Composa\recovery`, both subject to Windows package redirection. Saving or deliberately closing a document removes its active recovery copy; copies left after an unexpected exit can be offered at the next launch and then recovered or discarded.
+While a document has unsaved changes, the application periodically writes local recovery copies, normally every two minutes. These can contain the document's image content, layers and text, together with its title, original path, saved time, and process identifier. Kazuha's recovery location is `%LOCALAPPDATA%\Kazuha\recovery`; the legacy Composa location is `%LOCALAPPDATA%\Composa\recovery`, both subject to Windows package redirection. Saving or deliberately closing a document removes its active recovery copy; copies left after an unexpected exit can be offered at the next launch and then recovered or discarded.
 
-Saved projects and exports remain where you put them until you delete them. Preferences remain for reuse. If you use the separate GitHub sideload build's download feature, downloaded upstream releases remain in your Downloads folder. Windows controls how package data is retained or removed during reset and uninstall. To remove remaining local data, close the app first and remove only the settings, recovery copies, or downloaded files you no longer need. Deleting recovery copies removes the ability to recover that work. Files in synced storage and backups are also subject to those services' retention rules.
+Saved projects and exports remain where you put them until you delete them. Preferences remain for reuse. If you use the legacy Composa sideload build's download feature, downloaded upstream releases remain in your Downloads folder. Windows controls how package data is retained or removed during reset and uninstall. To remove remaining local data, close the app first and remove only the settings, recovery copies, or downloaded files you no longer need. Deleting recovery copies removes the ability to recover that work. Files in synced storage and backups are also subject to those services' retention rules.
 
-## Updates in the Microsoft Store build
+## Updates in current Kazuha builds
 
-The managed Store build does not run the application's automatic GitHub update checks or offer GitHub release downloads. **Help > Check for Updates** displays a message directing you to the package manager without contacting GitHub. Microsoft Store manages Store-package delivery and updates under Microsoft's own services and policies.
+Both current Kazuha builds disable the application's automatic upstream GitHub update checks and release downloads. **Help > Check for Updates** displays a message referring to the package manager without contacting GitHub. Sideload users obtain later Kazuha versions manually from the project releases page. Microsoft Store manages Store-package delivery and updates under Microsoft's own services and policies. Browser downloads and Store services have their own network and privacy behavior.
 
 ## Updates in the legacy Composa GitHub sideload release
 
@@ -40,7 +40,7 @@ A connected client can receive document descriptions, layer names, text, rendere
 
 ## Diagnostics and third-party services
 
-The community packaging adds no advertising or analytics collection. The reviewed application source contains HTTP requests for the upstream update functions described above; that update flow is disabled by the managed channel used for the Store build and retained in the separate sideload build. The application source does not implement a document-upload or automatic crash-report-upload service. Errors can appear in local console or diagnostic trace output, which may contain error details and paths. This statement concerns application-controlled behavior and does not describe every native runtime or Windows diagnostic mechanism.
+The community packaging adds no advertising or analytics collection. The reviewed application source contains HTTP requests for the upstream update functions described above; that update flow is disabled by the managed channel used for both current Kazuha builds and retained only in the legacy Composa sideload build. The application source does not implement a document-upload or automatic crash-report-upload service. Errors can appear in local console or diagnostic trace output, which may contain error details and paths. This statement concerns application-controlled behavior and does not describe every native runtime or Windows diagnostic mechanism.
 
 Windows and Microsoft Store services, GitHub, external websites, storage providers, and any optional AI client have their own data practices. This policy does not govern those services or separate upstream distributions. Open-source licenses and upstream documentation describe software provenance and permissions; they do not replace the privacy policies of services you choose to use.
 

@@ -1,146 +1,63 @@
-# Kazuha packaging — legacy Composa MSIX
+# Kazuha build and packaging guide
 
-This guide describes the historical Composa 1.4.0 package retained by the Kazuha project. The signed package, certificate, technical identity, and installed name still use Composa. Kazuha-branded builds are prepared separately; use these instructions only with the legacy bundle named below.
+Kazuha is an independent Windows edition based on [Composa 1.4.0](https://github.com/dvdstelt/Composa/releases/tag/v1.4.0), with Kazuha branding and the upstream managed update channel. The original reference is [Compositor by Robbie Tilton](https://github.com/robbietilton/Compositor). Upstream licenses and notices remain included.
 
-This is a **local repack of the upstream Composa Windows x64 portable release**,
-not an official MSIX from its authors and not a new implementation of Compositor.
-Composa is an open-source Windows/Linux image editor inspired by the macOS
-[Compositor](https://github.com/robbietilton/Compositor) app. Its executable and
-bundled dependencies are unchanged. This package adds Windows installation
-metadata, resized upstream icons, and local provenance information.
+For installation, use the [Kazuha download guide](README-Kazuha.md). This document describes building the source and packages.
 
-The package appears as **Composa (local MSIX)** in Windows and has the distinct
-identity `Local.Composa.Windows`. It does not register file associations.
+## Requirements
 
-## Install
+- Windows x64 and 64-bit PowerShell 7.2 or later.
+- Git with the `source/Composa` submodule initialized at the pinned release commit.
+- .NET SDK **10.0.402**. Extract the official Windows x64 SDK into `build\dotnet`, or pass its installation directory with `-DotnetRoot` to the build script.
+- Windows SDK `MakeAppx.exe`; `SignTool.exe` is also required for the sideload package.
+- Network access to restore dependencies and obtain the model files used by the source build.
 
-Requirements: 64-bit Windows 10 version 2004 (build 19041) or newer, or Windows 11,
-and administrator access for the certificate trust step. No developer account,
-paid certificate, or existing signing credentials are needed. This build is
-signed with a free, locally generated **development certificate**.
+The bundled application includes .NET runtime **10.0.13**; users do not need an SDK. The source-build helper keeps SDK/cache activity within the workspace and does not install the SDK globally.
 
-1. Keep the MSIX, `Composa-Local-Build.cer`, `Install-Msix.ps1`, `sha256sums.txt`,
-   and accompanying documentation together in one folder. If you received a ZIP,
-   extract it first.
-2. If Windows marks the downloaded `Install-Msix.ps1` as blocked, first verify
-   the download against the published checksums, then right-click the script,
-   choose **Properties > Unblock > Apply**. If scripts are restricted by your
-   organization's policy, use the dialog workflow below when permitted.
-3. Open **Windows PowerShell** from Start using **Run as administrator**. Use
-   Windows PowerShell (`powershell.exe`), not PowerShell 7 (`pwsh.exe`).
-4. Change into the extracted folder and run:
+## Prepare and build Kazuha
 
-   ```powershell
-   .\Install-Msix.ps1
-   ```
-
-5. The script verifies every listed checksum, the package identity/publisher,
-   and its embedded signer, then shows the public certificate's fingerprint.
-   Read the trust prompt and type `TRUST` to trust this certificate and install.
-   Any other response cancels before certificate or installation changes.
-6. Open **Composa (local MSIX)** from Start.
-
-The certificate is imported only into **Local Computer > Trusted People**, never
-Trusted Root. It allows packages signed with this certificate to be installed on
-this computer. The script does not self-elevate, change execution policy, or
-enable Developer Mode. The exact certificate is trusted once; rerunning the
-installer skips the trust prompt if it is already present. After that trust step,
-the `.msix` can also be installed through the normal Windows App Installer UI.
-
-Checksums detect damaged or changed files; they are not independent proof of a
-publisher's identity. This local certificate is not a public verification of the
-Composa authors. Organization policy can still restrict sideloading.
-
-If script execution is restricted, do not change a managed machine's policy.
-The portable release can run without an MSIX installation. You can also install
-through Windows dialogs without running a PowerShell script:
-
-1. Check the package and certificate SHA-256 values against `sha256sums.txt`
-   using `Get-FileHash` in PowerShell.
-2. Double-click `Composa-Local-Build.cer` and choose **Install Certificate**.
-3. Select **Local Machine**, then approve the administrator prompt.
-4. Choose **Place all certificates in the following store**, then **Browse**.
-5. Select **Trusted People** (not **Trusted Root Certification Authorities**),
-   choose **OK**, **Next**, then **Finish**. This explicitly trusts this local
-   certificate on your computer.
-6. Double-click `Composa-1.4.0-x64.msix`, then choose **Install**.
-
-The dialog workflow above avoids running a PowerShell script.
-
-## Updates and removal
-
-Update this local MSIX manually. Composa's upstream built-in updater identifies
-the app as a portable Windows build and does not create or replace this local
-MSIX. A new local build generates a new development certificate, so a later
-repack may need its new certificate trusted. Package updates use an increased
-four-part version. The original private signing key is not retained.
-
-Remove the app through **Settings > Apps > Installed apps > Composa (local MSIX) >
-Uninstall**. When this local certificate is no longer needed, remove only its
-matching thumbprint from **Manage computer certificates > Trusted People >
-Certificates**. The thumbprint and expiration date are recorded in
-`PROVENANCE.txt`. No timestamp service is used; obtain a fresh local build if the
-certificate expires. Do not run portable and packaged copies simultaneously
-against the same documents.
-
-## Included files
-
-- `Composa-1.4.0-x64.msix`: upstream Composa **1.4.0**, with its .NET runtime and
-  bundled components. A separate .NET SDK/runtime is not required.
-- `Composa-Local-Build.cer`: public development certificate, without a private key.
-- `Install-Msix.ps1`: verification, explicit certificate trust, and installation.
-- `sha256sums.txt`: checksums for all bundle files other than this checksum list.
-- `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, and `PROVENANCE.txt`.
-- `README-Msix.md`: these instructions.
-
-The package version is **1.4.0.0** by default. The input portable ZIP SHA-256 is:
-
-```text
-1d3d8d5f1af258d2d82541b62a3b5a14cacb638f74bb4ccf2049e874833eb162
-```
-
-[Upstream source](https://github.com/dvdstelt/Composa) /
-[upstream release](https://github.com/dvdstelt/Composa/releases/tag/v1.4.0).
-Preserve the license and dependency notices when redistributing the payload.
-
-## Rebuild from the workspace
-
-Requirements: 64-bit **PowerShell 7.2 or later**, Windows SDK `makeappx.exe` and
-`signtool.exe`, the verified upstream ZIP, a fresh extraction with `composa.exe`
-at its root, and the upstream source tree for licenses/icons.
-
-From the workspace root:
+From the repository root, use fresh output directories:
 
 ```powershell
-.\packaging\Build-Msix.ps1 -PortableDirectory .\path-to-fresh-extracted-app
+.\packaging\Prepare-KazuhaSource.ps1 -LogoPath .\packaging\assets\kazuha-icon.png -OutputDirectory .\build\kazuha-source
+.\packaging\Build-ManagedApp.ps1 -SourceDirectory .\build\kazuha-source -BrandingRecordPath .\build\kazuha-source.branding.json
 ```
 
-Default input paths are `downloads\composa-1.4.0-win-x64.zip` and
-`source\Composa`; distributable output goes to `dist\msix`, while staging and
-temporary signing files stay under `build\msix`. Supply `-UpstreamArchivePath`,
-`-SourceDirectory`, `-OutputDirectory`, `-WorkDirectory`, `-MakeAppxPath`, or
-`-SignToolPath` to override them. `-PackageVersion` changes the revision component
-of `1.4.0.0` while keeping the upstream application version pinned to 1.4.0.
+The preparation step leaves `source\Composa` unchanged. It creates an isolated copy at commit `86529d3b5355d28ddc28ec3db2e4de1d4d00f63b`, applies the Kazuha display-name, product-metadata, and icon changes, and records the complete change and hashes. The current branding record covers 12 files, including matching test expectations.
 
-The builder verifies the pinned ZIP hash and every extracted file. It preserves
-the complete payload and creates 44, 50, and 150 px icons from the upstream PNG.
-MakeAppx runs its normal manifest/semantic validation; validation is not disabled.
-Each build uses a unique staging directory retained for inspection.
+The build runs selected upstream tests and publishes a self-contained `win-x64` application with `UpdateChannel=managed`. Its default output is `dist\store-managed\kazuha-1.4.0-win-x64`, with file hashes and test results in `dist\store-managed\build-provenance.json`. Existing payload output is refused; use a fresh `-OutputRootPath` for another build and pass the matching provenance path to the package builder.
 
-The signing certificate is created **in memory** with SHA-256, DigitalSignature
-usage, Code Signing EKU, and a non-CA constraint. The public `.cer` is distributed.
-The private key is exported only to a uniquely located temporary PFX protected by
-a random, unlogged password. The PFX is removed in a `finally` block after
-signing; the private key is never included in the MSIX or distribution folder.
-Building does not install the package or change certificate stores/system settings.
+The user-visible name and logo are Kazuha. Internal assemblies, `composa.exe`, `.cmps` format, and MCP compatibility identifiers retain their upstream names. The managed channel disables automatic upstream GitHub checks and release downloads; the manual update menu refers to the package manager. Sideload users update manually from Kazuha releases.
 
-## Microsoft references
+## Signed GitHub sideload package
 
-- [Create a certificate for package signing](https://learn.microsoft.com/en-us/windows/msix/package/create-certificate-package-signing)
-- [Sign an MSIX package](https://learn.microsoft.com/en-us/windows/msix/package/sign-msix-package-guide)
-- [Create packages with MakeAppx](https://learn.microsoft.com/en-us/windows/msix/package/create-app-package-with-makeappx-tool)
+```powershell
+.\packaging\Build-KazuhaMsix.ps1 -PortableDirectory .\dist\store-managed\kazuha-1.4.0-win-x64
+.\tests\verify-kazuha-package.ps1 -PackagePath .\dist\kazuha-msix\Kazuha-1.4.0-x64.msix
+```
 
-This community download retains the locally tested package and its self-signed
-development certificate. Installing it requires the explicit trust step above.
-A Microsoft Store release needs its own Store-assigned package identity and
-Microsoft certification; this download is the independent sideload build.
+The bundle is written to `dist\kazuha-msix`. It contains `Kazuha-1.4.0-x64.msix`, `Kazuha-Local-Build.cer`, `Install-Kazuha.ps1`, `README-Kazuha.md`, `LICENSE.txt`, `THIRD-PARTY-NOTICES.txt`, `PROVENANCE.txt`, and `sha256sums.txt`.
+
+The package identity is `Local.Kazuha.Windows`, version `1.4.0.0`, publisher `CN=Kazuha Local Build`, and display name **Kazuha**. Its minimum Windows version is `10.0.19041.0`.
+
+The builder checks source/branding provenance, current logo, assembly metadata, and all application files before MakeAppx validation. It creates a non-CA signing certificate in memory with code-signing usage, exports only a public CER for distribution, and removes its temporary random-password PFX after signing. Each new build has a new certificate and different hashes. Building and read-only verification do not install the app or change certificate trust.
+
+To install, follow [README-Kazuha.md](README-Kazuha.md). The certificate requires explicit trust in **Local Computer > Trusted People**. It is not a publicly trusted publisher identity. The optional helper uses administrator access only with `-TrustCertificate`, then exits. Run it again without that switch in an ordinary Windows PowerShell window to install for the intended user; that step refuses elevation. No developer or signing account is required.
+
+## Unsigned Microsoft Store upload package
+
+Use the identity assigned to the Kazuha product in Partner Center:
+
+```powershell
+.\packaging\Build-StoreMsix.ps1 -PortableDirectory .\dist\store-managed\kazuha-1.4.0-win-x64 -IdentityName Fuh.Kazuha -Publisher 'CN=06B7220A-0F66-4D34-82F8-853BDEDBC011' -PublisherDisplayName Fuh -DisplayName Kazuha
+```
+
+The output is `dist\store\Fuh.Kazuha_1.4.0.0_x64_Store.msix`, accompanied by a build report and SHA-256 file. This package uses the same audited application payload, the Store-assigned identity, and `runFullTrust`. It is unsigned and contains no local certificate installer or signing key. It is intended for Partner Center upload, not the GitHub sideload installation workflow.
+
+The package has been built, uploaded, and saved after portal package validation. Installation testing, Windows App Certification Kit testing, certification, and Store publication are not implied by that upload. Draft listing and certification instructions are in [docs/store/LISTING-DRAFT.md](../docs/store/LISTING-DRAFT.md).
+
+## Verification and redistribution
+
+The build records selected test results, source revision, branding changes, logo hash, SDK version, and every payload file hash. See the [sanitized verification summary](../docs/VERIFICATION.md). Raw build reports are generated locally and excluded from Git; preserve license and third-party notices when redistributing application files.
+
+The historical `Build-Msix.ps1` and `Install-Msix.ps1` scripts target the earlier Composa-branded package. They do not build or install the Kazuha release. Its [legacy release guide](../docs/releases/v1.4.0-msix.1.md) retains the original filenames, certificate, and installation label.

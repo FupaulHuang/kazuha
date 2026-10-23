@@ -2,7 +2,7 @@
 
 The original reference for this project is **[Compositor by Robbie Tilton](https://github.com/robbietilton/Compositor)**.
 
-Kazuha is based on **[Composa by Dennis van der Stelt](https://github.com/dvdstelt/Composa)**. This repository adds Kazuha branding, Windows packaging, installation, and verification work. The historical MSIX release packages the unmodified Composa 1.4.0 portable application and retains its Composa names. The new Kazuha Store build is being prepared from the pinned upstream source with Kazuha branding and the existing managed update channel. Kazuha is independently maintained and does not claim authorship of the upstream editor.
+Kazuha is based on **[Composa by Dennis van der Stelt](https://github.com/dvdstelt/Composa)**. This repository adds Kazuha branding, Windows packaging, installation, and verification work. The historical MSIX release packages the unmodified Composa 1.4.0 portable application and retains its Composa names. The current Kazuha sideload and Store packages are built from the pinned upstream source with recorded Kazuha branding and the existing managed update channel. Kazuha is independently maintained and does not claim authorship of the upstream editor.
 
 The root MIT license covers this repository's additions. The upstream source submodule and downloaded application retain their own licenses and notices, including:
 
