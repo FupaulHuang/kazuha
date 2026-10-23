@@ -18,7 +18,7 @@ Prepared 23 October 2026. This is draft content for a free English listing. **Ka
 | Category | Photo & video; use Multimedia design if that better matches the available category choices |
 | Support URL | https://github.com/FupaulHuang/kazuha/issues |
 | Website | https://github.com/FupaulHuang/kazuha |
-| Privacy policy URL | https://github.com/FupaulHuang/kazuha/blob/main/docs/store/PRIVACY.md — publish the reviewed policy before using this URL |
+| Privacy policy URL | https://github.com/FupaulHuang/kazuha/blob/main/docs/store/PRIVACY.md |
 | Search keywords | photo editor; image editor; layers; compositing; retouching; background removal; image filters |
 
 ### Short description
@@ -98,6 +98,6 @@ A search of `src` for HTTP/network clients and URLs located the update client an
 - Installed-Kazuha workflow testing, Windows App Certification Kit results, and Microsoft's certification and restricted-capability approval. Source tests and upload validation do not supply those results.
 - Final listing text, category selection, screenshot/logo acceptance, and any additional device-family requirements in the portal.
 - Age-rating questionnaire answers, markets, release timing, and any identity, tax, or compliance declarations requested by the account. These must not be inferred from the editor's feature list.
-- A publicly reachable approved privacy-policy URL and confirmation that the repository's issue tracker is the support/privacy contact the maintainer will monitor.
+- Confirmation that the repository's issue tracker is the support/privacy contact the maintainer will monitor.
 
 The package identity, x64 architecture, minimum Windows version, Kazuha UI/logo, runtime paths, and production managed-update metadata are now verified. Submission options include the `runFullTrust` explanation and a hold for manual publication. These draft settings do not establish certification or Store availability.
