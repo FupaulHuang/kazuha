@@ -1,6 +1,6 @@
-# Verification summary
+# Kazuha — legacy package verification
 
-Composa 1.4.0 and its local MSIX package were checked on **23 October 2026**, on **Windows 11 25H2, build 26200, x64**. This is a summary of that local verification run, not a guarantee for every Windows configuration.
+The legacy Composa 1.4.0 application and its local MSIX package were checked on **23 October 2026**, on **Windows 11 25H2, build 26200, x64**. The project is now named Kazuha; this report retains the identity of the package that was tested. It is a summary of that local verification run, not a guarantee for every Windows configuration. Kazuha-branded builds require separate verification.
 
 ## Package and installation
 

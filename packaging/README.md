@@ -1,4 +1,6 @@
-# Composa 1.4.0 - local Windows MSIX
+# Kazuha packaging — legacy Composa MSIX
+
+This guide describes the historical Composa 1.4.0 package retained by the Kazuha project. The signed package, certificate, technical identity, and installed name still use Composa. Kazuha-branded builds are prepared separately; use these instructions only with the legacy bundle named below.
 
 This is a **local repack of the upstream Composa Windows x64 portable release**,
 not an official MSIX from its authors and not a new implementation of Compositor.
