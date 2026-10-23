@@ -1,6 +1,6 @@
-# Kazuha — Microsoft Store listing draft
+# Kazuha — Microsoft Store listing
 
-Prepared 23 October 2026. This is draft content for a free English listing. **Kazuha** is the reserved Store name for product **9N327XKWB7L5**. The Store package was built from pinned Composa source with Kazuha UI branding, a minimal maple-leaf logo with an autumn gradient and one wind curve, and the existing `UpdateChannel=managed` setting. The source build passed 216 selected tests; the unsigned package passed payload checks and Partner Center upload validation and was saved in the draft. Native payload checks confirmed the title, icon, sample rendering, and managed-update message. Installed-package testing, Windows App Certification Kit results, Store certification, and publication remain unestablished.
+Prepared 23 October 2026. This document records the free English listing submitted for certification. **Kazuha** is the reserved Store name for product **9N327XKWB7L5**. The Store package was built from pinned Composa source with Kazuha UI branding, a minimal maple-leaf logo with an autumn gradient and one wind curve, and the existing `UpdateChannel=managed` setting. The source build passed 216 selected tests; the unsigned package passed payload checks and Partner Center upload validation and was saved in the draft. Native payload checks confirmed the title, icon, sample rendering, and managed-update message. Installed-package testing, Windows App Certification Kit results, Store certification, and publication remain unestablished.
 
 ## Proposed listing fields
 
@@ -101,11 +101,11 @@ Reviewed Composa upstream commit: `86529d3b5355d28ddc28ec3db2e4de1d4d00f63b`. Th
 
 A search of `src` for HTTP/network clients and URLs located the update client and model provenance URLs. The managed channel prevents both current Kazuha builds from initiating the upstream update flow; only the legacy Composa-branded release retains that flow. The model URLs are catalog metadata; the model loader reads local files. No application analytics/upload endpoint was identified by that source search. This is not a claim about every native dependency or operating-system diagnostic mechanism.
 
-## Saved submission status
+## Submission status
 
-Partner Center reports the package as **Validated** and the Store listing as **Complete** after the copyright field was reduced to the 175-character value above. The **Submit for certification** button is enabled. The corrected screenshot was accepted as a genuine **1560 × 992 PNG**, and the simplified **300 × 300** tile was accepted. The user approved the age-rating agreement; the saved ratings are **IARC 3+ / ESRB E**. The saved price is **Free ($0)**.
+Before submission, Partner Center reported the package as **Validated** and the Store listing as **Complete** after the copyright field was reduced to the 175-character value above. The corrected screenshot was accepted as a genuine **1560 × 992 PNG**, and the simplified **300 × 300** tile was accepted. The user approved the age-rating agreement; the saved ratings are **IARC 3+ / ESRB E**. The saved price is **Free ($0)**.
 
-**Certification has not been submitted.** The hold for manual publication remains selected. These portal results do not establish installed-Kazuha workflow testing, Windows App Certification Kit results, or Microsoft certification.
+**Submitted for certification on 23 October 2026 (Asia/Singapore).** Partner Center shows the overall status **In certification**. Its timeline shows **Submission complete**, **Preprocessing in progress**, **Certification not started**, and **Publishing not started**. This confirms submission, not approval or public availability. The manual publication hold remains selected: publication requires **Publish now**. These portal results do not establish installed-Kazuha workflow testing, Windows App Certification Kit results, or Microsoft certification.
 
 ## Inputs still requiring confirmation
 
@@ -114,4 +114,4 @@ Partner Center reports the package as **Validated** and the Store listing as **C
 - Markets, final publication timing, and any outstanding identity, tax, or compliance declarations requested by the account. These must not be inferred from the editor's feature list.
 - Confirmation that the repository's issue tracker is the support/privacy contact the maintainer will monitor.
 
-The package identity, x64 architecture, minimum Windows version, Kazuha UI/logo, runtime paths, and production managed-update metadata are now verified. Submission options include the `runFullTrust` explanation and a hold for manual publication. These draft settings do not establish certification or Store availability.
+The package identity, x64 architecture, minimum Windows version, Kazuha UI/logo, runtime paths, and production managed-update metadata are now verified. Submission options include the `runFullTrust` explanation and a hold for manual publication. These submission settings do not establish certification or Store availability.
