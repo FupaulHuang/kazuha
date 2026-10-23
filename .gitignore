@@ -1,0 +1,23 @@
+# Downloaded upstream binaries and generated packaging artifacts
+downloads/
+dist/
+build/
+
+# Local logs, screenshots, user settings backups, and installation records
+verification/
+packaging/Trust-LocalCertificate.ps1
+
+# Local signing material and credentials
+*.pfx
+*.p12
+*.key
+*.pem
+*.cer
+.env
+.env.*
+
+# Editor and operating-system files
+.vs/
+.vscode/
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,3 @@
+[submodule "source/Composa"]
+	path = source/Composa
+	url = https://github.com/dvdstelt/Composa.git
